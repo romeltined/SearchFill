@@ -62,11 +62,12 @@
             //});
 
         $('.basicAutoSelect').autoComplete({
-            minLength: 2
+            minLength: 1
         });
         $('.basicAutoSelect').on('autocomplete.select', function (evt, item) {
             //console.log('select', item);
             $("#CountryId").val(item.value);
+            $("#Name").val(item.text);
             //$('.basicAutoSelectSelected').html(item.value);
 
         });

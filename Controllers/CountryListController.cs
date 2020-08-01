@@ -24,10 +24,10 @@ namespace SearchFill.Controllers
         //BOOTSTRAP
         // GET: api/<CountryListController>
         [HttpGet]
-        public IEnumerable<CountryDTO> Get()
+        public async Task<IEnumerable<CountryDTO>> Get()
         {
             string term = HttpContext.Request.Query["q"].ToString();
-            var countries = _context.Country.Where(c => c.Name.Contains(term)).ToList();
+            var countries = await _context.Country.Where(c => c.Name.Contains(term)).ToListAsync();
             var countryListDTO = new List<CountryDTO>();
             foreach (Country c in countries)
             {

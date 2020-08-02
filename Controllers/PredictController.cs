@@ -38,7 +38,7 @@ namespace SearchFill.Controllers
         [HttpPost]
         public ActionResult<string> Post([FromBody] SentimentData input)
         {
-            if (!ModelState.IsValid)
+             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }

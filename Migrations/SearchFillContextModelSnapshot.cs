@@ -48,7 +48,18 @@ namespace SearchFill.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CountryId");
+
                     b.ToTable("Person");
+                });
+
+            modelBuilder.Entity("SearchFill.Models.Person", b =>
+                {
+                    b.HasOne("SearchFill.Models.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

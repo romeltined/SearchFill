@@ -22,7 +22,7 @@ namespace SearchFill.Controllers
         // GET: Persons
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Person.ToListAsync());
+            return View(await _context.Person.Include(p => p.Country).ToListAsync());
         }
 
         // GET: Persons/Details/5
@@ -33,8 +33,9 @@ namespace SearchFill.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Person
+            var person = await _context.Person.Include(p => p.Country)
                 .FirstOrDefaultAsync(m => m.Id == id);
+                
             if (person == null)
             {
                 return NotFound();
@@ -73,7 +74,10 @@ namespace SearchFill.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Person.FindAsync(id);
+            //var person = await _context.Person.FindAsync(id);
+            var person = await _context.Person.Include(p => p.Country)
+                            .FirstOrDefaultAsync(p => p.Id == id);
+
             if (person == null)
             {
                 return NotFound();
@@ -124,8 +128,8 @@ namespace SearchFill.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Person
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var person = await _context.Person.Include(p=>p.Country)
+                .FirstOrDefaultAsync(p => p.Id == id);
             if (person == null)
             {
                 return NotFound();
@@ -140,6 +144,7 @@ namespace SearchFill.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var person = await _context.Person.FindAsync(id);
+
             _context.Person.Remove(person);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

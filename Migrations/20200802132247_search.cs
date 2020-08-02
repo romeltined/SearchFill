@@ -2,7 +2,7 @@
 
 namespace SearchFill.Migrations
 {
-    public partial class searchfill : Migration
+    public partial class search : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,16 +31,27 @@ namespace SearchFill.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Person", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Person_Country_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Country",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Person_CountryId",
+                table: "Person",
+                column: "CountryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Country");
+                name: "Person");
 
             migrationBuilder.DropTable(
-                name: "Person");
+                name: "Country");
         }
     }
 }

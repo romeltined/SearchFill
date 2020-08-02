@@ -9,8 +9,8 @@ using SearchFill.Data;
 namespace SearchFill.Migrations
 {
     [DbContext(typeof(SearchFillContext))]
-    [Migration("20200731032816_searchfill")]
-    partial class searchfill
+    [Migration("20200802132247_search")]
+    partial class search
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,7 +50,18 @@ namespace SearchFill.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CountryId");
+
                     b.ToTable("Person");
+                });
+
+            modelBuilder.Entity("SearchFill.Models.Person", b =>
+                {
+                    b.HasOne("SearchFill.Models.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -19,10 +19,20 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CountryId" class="control-label"></label>
-                <input asp-for="CountryId" class="form-control" />
-                <span asp-validation-for="CountryId" class="text-danger"></span>
+                @*<label asp-for="CountryId" class="control-label"></label>*@
+                <input asp-for="CountryId" class="form-control" type="hidden" />
+                @*<span asp-validation-for="CountryId" class="text-danger"></span>*@
             </div>
+
+            <div class="form-group">
+                <label class="control-label">Country</label>
+
+                <select class="form-control basicAutoSelect" name="simple_select"
+                        placeholder="type to search..."  
+                        data-url="/api/CountryList" autocomplete="off"></select>
+
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -37,3 +47,26 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+<script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.5/dist/latest/bootstrap-autocomplete.min.js"></script>
+
+<script>
+
+        $('.basicAutoSelect').autoComplete({
+            minLength: 1
+        });
+
+        $('.basicAutoSelect').on('autocomplete.select', function (evt, item) {
+
+            $("#CountryId").val(item.value);
+
+        });
+
+        var countryName = '@Html.Raw(Model.Country.Name)';
+
+        $('.basicAutoSelect').autoComplete('set', countryName);
+
+
+
+</script>

@@ -9,7 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.ML;
 using SearchFill.Data;
+using SearchFill.Models;
 
 namespace SearchFill
 {
@@ -29,6 +31,10 @@ namespace SearchFill
 
             services.AddDbContext<SearchFillContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("SearchFillContext")));
+
+            services.AddPredictionEnginePool<SentimentData, SentimentPrediction>()
+                .FromFile(modelName: "SentimentAnalysisModel", filePath: @"C:\Users\rstin\source\repos\SearchFill\bin\Debug\netcoreapp3.1\MLModels\sentiment_model.zip", watchForChanges: true);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

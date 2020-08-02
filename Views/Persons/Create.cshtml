@@ -35,7 +35,7 @@
 
                 @*<input class="form-control basicAutoComplete" type="text" autocomplete="off" id="CountryName">*@
 
-                
+
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -52,43 +52,24 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 
+    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.5/dist/latest/bootstrap-autocomplete.min.js"></script>
 
     <script>
-
-            //$('.basicAutoComplete').autoComplete({
-            //    resolverSettings: {
-            //        url: '/api/CountryList'
-            //    }
-            //});
-
         $('.basicAutoSelect').autoComplete({
             minLength: 1
         });
         $('.basicAutoSelect').on('autocomplete.select', function (evt, item) {
-            //console.log('select', item);
+
             $("#CountryId").val(item.value);
             $("#Name").val(item.text);
+
+            //console.log('select', item);
             //$('.basicAutoSelectSelected').html(item.value);
 
         });
 
     </script>
 
-
-    @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#CountryName').autocomplete({
-                source: '/api/CountryList',
-                select: function (event, ui) {
-                    this.value = ui.item.label;
-                    $("#CountryId").val(ui.item.value);
-                    return false;
-                }
-            });
-        });
-    </script>*@
 
 
 }

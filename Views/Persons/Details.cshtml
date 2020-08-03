@@ -10,21 +10,69 @@
     <h4>Person</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayName("Country")
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Country.Name)
         </dd>
     </dl>
 </div>
+
+<div class="row">
+    <div class="col-lg-9 offset-lg-3">
+        <button type="button" class="btn btn-primary" autocomplete="off"
+                data-toggle="modal" data-target="#testModal">
+            Open Test Modal
+        </button>
+ 
+    </div>
+</div>
+
+<div class="modal fade" id="testModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Country</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    @Html.DisplayName("Name") : @Html.DisplayFor(model => model.Name)
+                </div>
+                <select class="form-control basicModalAutoSelect" name="simple_select"
+                        placeholder="type to search..."
+                        data-url="/api/CountryList" autocomplete="off"></select>
+                <code class="basicModalAutoSelectSelected"></code>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+
+<script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.5/dist/latest/bootstrap-autocomplete.min.js"></script>
+
+<script>
+    // Modal
+    $('.basicModalAutoSelect').autoComplete();
+    $('.basicModalAutoSelect').on('autocomplete.select', function (evt, item) {
+        console.log('select');
+  
+        $('.basicModalAutoSelectSelected').html(JSON.stringify(item));
+    });
+
+</script>

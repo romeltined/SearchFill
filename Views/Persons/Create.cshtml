@@ -48,12 +48,12 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
+
+
+@section Scripts {
 
     <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.5/dist/latest/bootstrap-autocomplete.min.js"></script>
-
     <script>
         $('.basicAutoSelect').autoComplete({
             minLength: 1
@@ -61,15 +61,12 @@
         $('.basicAutoSelect').on('autocomplete.select', function (evt, item) {
 
             $("#CountryId").val(item.value);
-            //$("#Name").val(item.text);
-
-            //console.log('select', item);
-            //$('.basicAutoSelectSelected').html(item.value);
-
         });
-
     </script>
 
 
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 }
+
+

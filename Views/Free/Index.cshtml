@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Free";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <br />
+        <div>
+            <input id="searchBox" class="form-control" />
+        </div>
+        <br />
+        <div>
+            <button id="btnSearch" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $("#searchBox").val('ROMEL');
+    </script>
+
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
+

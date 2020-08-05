@@ -28,8 +28,9 @@
                 <label class="control-label">Country</label>
 
                 <select class="form-control basicAutoSelect" name="simple_select"
-                        placeholder="type to search..."  
-                        data-url="/api/CountryList" autocomplete="off"></select>
+                        placeholder="type to search..." 
+                        data-url="/api/CountryList" autocomplete="off">
+                </select>
 
             </div>
 
@@ -45,28 +46,21 @@
 </div>
 
 @section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.5/dist/latest/bootstrap-autocomplete.min.js"></script>
+
+    <script>
+        $('.basicAutoSelect').autoComplete({
+            minLength: 1
+        });
+        $('.basicAutoSelect').on('autocomplete.select', function (evt, item) {
+            $("#CountryId").val(item.value);
+        });
+        var countryName = '@Html.Raw(Model.Country.Name)';
+        $('.basicAutoSelect').autoComplete('set', countryName);
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 
-<script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.5/dist/latest/bootstrap-autocomplete.min.js"></script>
-
-<script>
-
-        $('.basicAutoSelect').autoComplete({
-            minLength: 1
-        });
-
-        $('.basicAutoSelect').on('autocomplete.select', function (evt, item) {
-
-            $("#CountryId").val(item.value);
-
-        });
-
-        var countryName = '@Html.Raw(Model.Country.Name)';
-
-        $('.basicAutoSelect').autoComplete('set', countryName);
-
-
-
-</script>

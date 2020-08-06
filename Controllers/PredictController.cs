@@ -23,9 +23,13 @@ namespace SearchFill.Controllers
 
         // GET: api/<PredictController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<Country> Get()
         {
-            return new string[] { "value1", "value2" };
+            var list = new List<Country>();
+            list.Add(new Country {Id = 1, Name="Bahamas" });
+            list.Add(new Country { Id = 2, Name = "Aruba" });
+            return list;
+
         }
 
         // GET api/<PredictController>/5

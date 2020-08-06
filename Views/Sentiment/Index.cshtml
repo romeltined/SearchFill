@@ -36,13 +36,13 @@
                 data: myJSON,
                 url: '/api/Predict',
                 type: 'post',
-                dataType: 'text',
                 contentType: 'application/json',
+                dataType: 'text',
                 success: function (data) {
                     try {
                         alert(data);
                     } catch (e) {
-                        alert("Output is not valid data: " + data);
+                        alert("Output is not valid text: " + data);
                     }
                 }, error: function (request, error) {
                     alert("AJAX Call Error: " + error);

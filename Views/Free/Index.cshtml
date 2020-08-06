@@ -12,6 +12,10 @@
         <div>
             <button id="btnSearch" class="btn btn-primary">Search</button>
         </div>
+        <br />
+        <div>
+            <button id="btnGet" class="btn btn-primary">GetPredict</button>
+        </div>
     </div>
 
 
@@ -43,6 +47,35 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        $("#btnGet").click(function () {
+            
+            $.ajax({
+                url: '/api/Predict',
+                type: "GET",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data) {
+                    try {
+                        var htmlstr = '';
+                        var parsed = JSON.parse(JSON.stringify(data));
+                        for (var i = 0; i < parsed.length; i++) {
+                            var jsonCountry = JSON.parse(JSON.stringify(parsed[i]));
+                            //alert(jsonCountry.name);
+                            htmlstr = htmlstr + '<li>' + jsonCountry.name + '</li>';
+                        }
+                        htmlstr = '<ul>' + htmlstr + '</ul>';
+                        $('#PartialContainer').html(htmlstr);
+                    } catch (e) {
+                        alert("Output is not valid : " + data);
+                    }
+                }, error: function (request, error) {
+                    alert("AJAX Call Error: " + error);
+                }
+            });
+        });re
     </script>
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

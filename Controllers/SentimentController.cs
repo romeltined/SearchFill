@@ -4,48 +4,30 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SearchFill.Data;
 
 namespace SearchFill.Controllers
 {
-    public class FreeController : Controller
+    public class SentimentController : Controller
     {
-
-        private readonly SearchFillContext _context;
-
-        public FreeController(SearchFillContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<IActionResult> CountryPartial(string search)
-        {
-  
-            var result = await _context.Country.Where(c => c.Name.Contains(search)).ToListAsync();
-
-            return PartialView("_CountryPartial", result);
-        }
-
-        // GET: FreeController
+        // GET: SentimentController
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: FreeController/Details/5
+        // GET: SentimentController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: FreeController/Create
+        // GET: SentimentController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: FreeController/Create
+        // POST: SentimentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -60,13 +42,13 @@ namespace SearchFill.Controllers
             }
         }
 
-        // GET: FreeController/Edit/5
+        // GET: SentimentController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: FreeController/Edit/5
+        // POST: SentimentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -81,13 +63,13 @@ namespace SearchFill.Controllers
             }
         }
 
-        // GET: FreeController/Delete/5
+        // GET: SentimentController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: FreeController/Delete/5
+        // POST: SentimentController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

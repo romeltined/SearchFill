@@ -10,7 +10,7 @@
         </div>
         <br />
         <div>
-            <button id="btnSearch" class="btn btn-primary">Search</button>
+            <button id="btnSearch" class="btn btn-primary">Predict</button>
         </div>
     </div>
 
@@ -19,10 +19,7 @@
 
 </div>
 <br>
-<div class="row">
-    <div id="PartialContainer">
-    </div>
-</div>
+ 
 
 @section Scripts {
 
@@ -31,15 +28,24 @@
 
     <script>
         $("#btnSearch").click(function () {
-            $("#PartialContainer").html('<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>');
-
             var search = $("#searchBox").val();
+            var obj = { SentimentText: search, Sentiment: false }; 
+            
+            var myJSON = JSON.stringify(obj);
             $.ajax({
-                url: '/Free/CountryPartial/?search=' + search + '',
-                type: "GET",
+                data: myJSON,
+                url: '/api/Predict',
+                type: 'post',
+                dataType: 'text',
                 contentType: 'application/json',
-                success: function (result) {
-                    $("#PartialContainer").html(result);
+                success: function (data) {
+                    try {
+                        alert(data);
+                    } catch (e) {
+                        alert("Output is not valid data: " + data);
+                    }
+                }, error: function (request, error) {
+                    alert("AJAX Call Error: " + error);
                 }
             });
         });

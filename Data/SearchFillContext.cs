@@ -17,5 +17,8 @@ namespace SearchFill.Data
         public DbSet<SearchFill.Models.Country> Country { get; set; }
 
         public DbSet<SearchFill.Models.Person> Person { get; set; }
+        public DbSet<SearchFill.Models.Item> Item { get; set; }
+        public DbSet<SearchFill.Models.SportItems> SportItems { get; set; }
+
     }
 }

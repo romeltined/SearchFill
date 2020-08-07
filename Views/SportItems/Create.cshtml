@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Sport</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label class="control-label">Sport</label>
+                <input id="Sport" type="text" class="form-control" />
+            </div>
+            <div>
+
+            </div>
+
+            <div class="form-group">
+                <input id="btnCreate" type="button" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script>
+        $("#btnCreate").click(function () {
+            var sport =  $("#Sport").val();
+            var items = ["beach", "sand", "sun"];
+            var obj = { Sport: sport, Items: items };
+
+            var myJSON = JSON.stringify(obj);
+            $.ajax({
+                data: myJSON,
+                url: '/SportItems/Create',
+                type: 'post',
+                contentType: 'application/json',
+                dataType: 'text',
+                success: function (data) {
+                    try {
+                        //alert(data);
+                        window.location.href = data;
+                    } catch (e) {
+                        //alert("Output is not valid text: " + data);
+                    }
+                }, error: function (request, error) {
+                    alert("AJAX Call Error: " + error);
+                }
+            });
+        });
+    </script>
+
+
+}
+

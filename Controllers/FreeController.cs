@@ -33,6 +33,11 @@ namespace SearchFill.Controllers
             return View();
         }
 
+        public ActionResult Rows()
+        {
+            return View();
+        }
+
         // GET: FreeController/Details/5
         public ActionResult Details(int id)
         {

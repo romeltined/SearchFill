@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "Rows";
+}
+
+
+
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>*@
+@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
+
+<h1>Rows</h1>
+
+
+
+<div class="card m-1" style="min-width: 18rem; max-width:50%">
+    <div class="card-header">
+        <h3>City Details</h3>
+    </div>
+    <div class="card-body">
+        <div class="form-row">
+            <div class="col-sm-10">
+                <input id="inputCity" type="text" class="form-control" placeholder="City">
+            </div>
+            <div class="col">
+                <button class="btn btn-light" id="btnCitySave"><span class="glyphicon glyphicon-ok"  /></button>
+            </div>
+        </div>
+
+        <table id="cityTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+ 
+
+<br />
+
+<div>
+    End
+</div>
+
+@section Scripts {
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script>
+        $("#btnCitySave").click(function () {
+            var obj = { Id: 0, ItemName: "ball" };
+            var myJSON = JSON.stringify(obj);
+            $.ajax({
+                data: myJSON,
+                url: '/api/Items',
+                type: "post",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data) {
+                    try {
+   
+                    } catch (e) {
+                        alert("Output is not valid : " + data);
+                    }
+                }, error: function (request, error) {
+                    alert("AJAX Call Error: " + error);
+                }
+            });
+
+
+            var trash = '<button onclick="DeleteRow(this)" class="btn btn-default glyphicon glyphicon-trash"></button>';
+            $('#cityTable > tbody:last-child').append('<tr><td valign="middle">Column1</td><td>' +  trash + '</td></tr>');
+        });
+
+        $("inputCity").on('keyup', function () {
+            $("#btnCitySave").prop("disabled", this.value.length);
+        });
+    </script>
+
+    <script>
+        function DeleteRow(clt) {
+            $(clt).closest('tr').remove(); 
+            //alert("delete!");
+        }
+    </script>
+
+    <script>
+        $("#btnGet").click(function () {
+            var obj = {Id:0, ItemName: "ball" };
+
+            var myJSON = JSON.stringify(obj);
+            $.ajax({
+                url: '/api/Predict',
+                type: "GET",
+                contentType: 'application/json',
+                dataType: 'json',
+                success: function (data) {
+                    try {
+                        var htmlstr = '';
+                        var parsed = JSON.parse(JSON.stringify(data));
+                        for (var i = 0; i < parsed.length; i++) {
+                            var jsonCountry = JSON.parse(JSON.stringify(parsed[i]));
+                            //alert(jsonCountry.name);
+                            htmlstr = htmlstr + '<li>' + jsonCountry.name + '</li>';
+                        }
+                        htmlstr = '<ul>' + htmlstr + '</ul>';
+                        $('#PartialContainer').html(htmlstr);
+                    } catch (e) {
+                        alert("Output is not valid : " + data);
+                    }
+                }, error: function (request, error) {
+                    alert("AJAX Call Error: " + error);
+                }
+            });
+        });
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

@@ -145,12 +145,16 @@ namespace SearchFill.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<SportItems>> PostSportItems(SportItems sportItems)
+        public async Task<ActionResult<SportItems>> PostSportItems([FromForm] IFormCollection sportItems)
         {
-            _context.SportItems.Add(sportItems);
-            await _context.SaveChangesAsync();
+            //public async Task<ActionResult<SportItems>> PostSportItems(SportItemsDTO sportItems)
+            //_context.SportItems.Add(sportItems);
+            var s = sportItems;
+            var w = s["Sport"].ToString();
+            //await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSportItems", new { id = sportItems.Id }, sportItems);
+            //return CreatedAtAction("GetSportItems", new { id = sportItems.Id }, sportItems);
+            return CreatedAtAction("GetSportItems", new { id = 1 });
         }
 
         // DELETE: api/SportItems1/5

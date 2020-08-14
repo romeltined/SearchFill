@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.ML;
 using SearchFill.Data;
 using SearchFill.Models;
+using Microsoft.OpenApi.Models;
 
 namespace SearchFill
 {
@@ -35,6 +37,8 @@ namespace SearchFill
             services.AddPredictionEnginePool<SentimentData, SentimentPrediction>()
                 .FromFile(modelName: "SentimentAnalysisModel", filePath: @"C:\Users\rstin\source\repos\SearchFill\bin\Debug\netcoreapp3.1\MLModels\sentiment_model.zip", watchForChanges: true);
 
+            services.AddSwaggerGen();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +57,12 @@ namespace SearchFill
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -63,6 +73,8 @@ namespace SearchFill
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
         }
     }
 }

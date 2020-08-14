@@ -50,6 +50,11 @@ namespace SearchFill.Controllers
             return View();
         }
 
+        public ActionResult ModelBind()
+        {
+            return View();
+        }
+
         // POST: FreeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]

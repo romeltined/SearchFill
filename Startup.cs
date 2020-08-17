@@ -30,9 +30,10 @@ namespace SearchFill
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddRazorPages();
 
-            services.AddDbContext<SearchFillContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("SearchFillContext")));
+            //services.AddDbContext<SearchFillContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("SearchFillContext")));
 
             services.AddPredictionEnginePool<SentimentData, SentimentPrediction>()
                 .FromFile(modelName: "SentimentAnalysisModel", filePath: @"C:\Users\rstin\source\repos\SearchFill\bin\Debug\netcoreapp3.1\MLModels\sentiment_model.zip", watchForChanges: true);
@@ -65,6 +66,7 @@ namespace SearchFill
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -72,6 +74,7 @@ namespace SearchFill
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
 
 

@@ -72,6 +72,11 @@ namespace SearchFill.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Country",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 1, "Poland" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Item_SportItemsId",
                 table: "Item",

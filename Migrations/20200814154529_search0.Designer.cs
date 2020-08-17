@@ -10,7 +10,7 @@ using SearchFill.Data;
 namespace SearchFill.Migrations
 {
     [DbContext(typeof(SearchFillContext))]
-    [Migration("20200809031313_search0")]
+    [Migration("20200814154529_search0")]
     partial class search0
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,13 @@ namespace SearchFill.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Country");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Poland"
+                        });
                 });
 
             modelBuilder.Entity("SearchFill.Models.Item", b =>

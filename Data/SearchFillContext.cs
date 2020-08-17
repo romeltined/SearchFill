@@ -20,5 +20,17 @@ namespace SearchFill.Data
         public DbSet<SearchFill.Models.Item> Item { get; set; }
         public DbSet<SearchFill.Models.SportItems> SportItems { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Country>().HasData(
+                new Country
+                {
+                    Id = 1,
+                    Name = "Poland"
+                }
+            );
+        }
+
+        public DbSet<SearchFill.Models.Species> Species { get; set; }
     }
 }

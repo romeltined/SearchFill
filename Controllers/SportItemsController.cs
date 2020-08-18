@@ -15,7 +15,7 @@ using SearchFill.Models;
 
 namespace SearchFill.Controllers
 {
-    [Authorize(Roles ="Admin,User")]
+    [Authorize(Roles ="Administrator,User")]
     public class SportItemsController : Controller
     {
         private readonly SearchFillContext _context;

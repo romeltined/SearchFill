@@ -1,0 +1,27 @@
+﻿@model IEnumerable<SearchFill.Models.UserRoleDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="/UserRole/UserRoles/?email=@item.Email">@item.Email</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

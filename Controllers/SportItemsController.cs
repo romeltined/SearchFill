@@ -2,26 +2,43 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SearchFill.Data;
 using SearchFill.Models;
 
+
 namespace SearchFill.Controllers
 {
+    [Authorize(Roles ="Admin,User")]
     public class SportItemsController : Controller
     {
         private readonly SearchFillContext _context;
-
+        //private readonly UserManager<IdentityUser> _userManager;
         public SportItemsController(SearchFillContext context)
         {
             _context = context;
+            
         }
         // GET: SportItemsController
         public async Task<IActionResult> Index()
         {
+
+            //var user = _context.Users.Where(u => u.Email == "rstined@yahoo.com").FirstOrDefault();
+            var currUser = User.IsInRole("User");
+
+            var userRole = await (from user in _context.Users
+                                 join userRoles in _context.UserRoles on user.Id equals userRoles.UserId
+                                 join role in _context.Roles on userRoles.RoleId equals role.Id
+                                 where user.Email == "rstined@yahoo.com"
+                                 select new { UserId = user.Id, UserName = user.UserName, RoleId = role.Id, RoleName = role.Name })
+                        .ToListAsync();
+
             return View(await _context.SportItems.ToListAsync());
         }
 

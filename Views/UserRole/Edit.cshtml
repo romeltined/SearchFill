@@ -1,29 +1,49 @@
 ﻿@model SearchFill.Models.UserRoleDTO
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Detail";
 }
 
-<div class="row">
-    <div class="col-md-4">
-        <form method="post" action="/UserRole/EditRole/?email=@Model.Email" id="formDemo">
-            <div class="form-group">
-                <a>@Model.Email</a>
-            </div>
-            <div class="form-group">
+<h1>Edit</h1>
+
+<h4>User</h4>
+<div>
+    <hr />
+    <form asp-action="Edit">
+        <input type="hidden" name="guid" value="@Model.Guid" />
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-sm-3">
+
+            </dt>
+            <dd class="col-sm-9">
+
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayName("Roles")
+            </dt>
+            <dd class="col-sm-9">
                 @foreach (var role in Model.Roles)
                 {
-                    <input type="checkbox" id="@role.Key" name="Role" value="@role.Key">
-                    <label for="@role.Key">@role.Key</label><br>
+                    <p>
+                        <input type="checkbox" id="@role.Key" name="Role" value="@role.Key" @( role.Value == true ? "checked" : "" ) />
+                        <text>@role.Key</text>
+                    </p>
                 }
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+            </dd>
+        </dl>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+    <div>
+        <a asp-action="Index">Back to List</a>
     </div>
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 

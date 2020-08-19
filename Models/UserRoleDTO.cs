@@ -7,7 +7,8 @@ namespace SearchFill.Models
 {
     public class UserRoleDTO
     {
+        public string Guid { get; set; }
         public string Email { get; set; }
-        public Dictionary<string, string> Roles { get; set; }
+        public Dictionary<string, bool> Roles { get; set; }
     }
 }

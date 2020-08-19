@@ -17,11 +17,11 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <a href="/UserRole/UserRoles/?email=@item.Email">@item.Email</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <a href="/UserRole/Edit/?guid=@item.Guid">@item.Email</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

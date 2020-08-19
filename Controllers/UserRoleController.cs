@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,68 +31,55 @@ namespace SearchFill.Controllers
         // GET: UserRoleController
         public async Task<ActionResult> Index()
         {
-            var users = await _userManager.Users.Select(s => new UserRoleDTO { Email = s.Email }).ToListAsync();
+            var users = await _userManager.Users.Select(s => new UserRoleDTO { Guid=s.Id , Email = s.Email }).ToListAsync();
             return View(users);
         }
 
-        // GET: UserRoleController/Details/5
-        [HttpGet]
-        public async Task<ActionResult> UserRoles(string email)
-        {
-            var qry = Request.QueryString; // ("email").ToString();
-            IdentityUser user = await _userManager.FindByEmailAsync(email);
-            var roles = await _userManager.GetRolesAsync(user);
-            UserRoleDTO userRoleDTO = new UserRoleDTO();
-            Dictionary<string, string> dicRole = new Dictionary<string, string>();
-            userRoleDTO.Email = user.Email;
-            foreach(var role in roles)
-            {
-                dicRole.Add(role.ToString(), "1");
-            }
-            userRoleDTO.Roles = dicRole;
-            return View(userRoleDTO);
-        }
 
         [HttpGet]
-        public async Task<ActionResult> Edit(string email)
+        public async Task<ActionResult> Edit(string guid)
         {
-            var qry = Request.QueryString; // ("email").ToString();
-            IdentityUser user = await _userManager.FindByEmailAsync(email);
+            IdentityUser user = await _userManager.FindByIdAsync(guid);
+            var allRoles = await _roleManager.Roles.ToListAsync();
             var roles = await _userManager.GetRolesAsync(user);
-            UserRoleDTO userRoleDTO = new UserRoleDTO();
-            Dictionary<string, string> dicRole = new Dictionary<string, string>();
-            userRoleDTO.Email = user.Email;
-            foreach (var role in roles)
+            UserRoleDTO userRoleDTO = new UserRoleDTO { Guid = user.Id, Email = user.Email };
+            Dictionary<string, bool> dicRole = new Dictionary<string, bool>();
+            foreach (var role in allRoles)
             {
-                dicRole.Add(role.ToString(), "1");
+                dicRole.Add(role.ToString(), roles.Contains(role.Name));
             }
             userRoleDTO.Roles = dicRole;
+
             return View(userRoleDTO);
         }
 
         [HttpPost]
-        public async Task<ActionResult> EditRole(string email, IFormCollection form)
+        [Authorize(Roles = "Administrator, Manager")]
+        public async Task<ActionResult> Edit([Bind("guid,Role")] string guid, List<string> role)
         {
-            var qry = Request.QueryString; // ("email").ToString();
-            var formlist = Request.Form.ToList();
-            IdentityUser user = await _userManager.FindByEmailAsync(email);
-            var roles = await _userManager.GetRolesAsync(user);
-            UserRoleDTO userRoleDTO = new UserRoleDTO();
-            Dictionary<string, string> dicRole = new Dictionary<string, string>();
-            userRoleDTO.Email = user.Email;
-            foreach (var role in roles)
+            IdentityUser user = await _userManager.FindByIdAsync(guid);
+            var allRoles = await _roleManager.Roles.ToListAsync();
+
+            foreach (var _role in allRoles)
             {
-                dicRole.Add(role.ToString(), "1");
+                if (role.Contains(_role.Name))
+                {
+                    await _userManager.AddToRoleAsync(user, _role.Name);
+                }
+                else
+                {
+                    await _userManager.RemoveFromRoleAsync(user, _role.Name);
+                };
             }
-            userRoleDTO.Roles = dicRole;
-            return View(userRoleDTO);
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public async Task<ActionResult> CreateRole()
         {
 
-            //var roles = await _roleManager.Roles.ToListAsync();
+            var roles = await _roleManager.Roles.ToListAsync();
 
             //var roleCheck = await _roleManager.RoleExistsAsync("Manager");
             //if (!roleCheck)
@@ -102,70 +91,16 @@ namespace SearchFill.Controllers
             //    await _roleManager.CreateAsync(new IdentityRole("User"));
 
             //}
-
-            IdentityUser user = await _userManager.FindByEmailAsync("rstined@gmail.com");
-            await _userManager.AddToRoleAsync(user, "Manager");
-            var userRoles = await _userManager.GetRolesAsync(user);
-            
+          
 
             return View();
         }
 
-        // POST: UserRoleController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: UserRoleController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        // POST: UserRoleController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: UserRoleController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: UserRoleController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+
+
     }
 }

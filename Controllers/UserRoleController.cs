@@ -58,15 +58,19 @@ namespace SearchFill.Controllers
         public async Task<ActionResult> Edit([Bind("guid,Role")] string guid, List<string> role)
         {
             IdentityUser user = await _userManager.FindByIdAsync(guid);
+            var roles = await _userManager.GetRolesAsync(user);
+
             var allRoles = await _roleManager.Roles.ToListAsync();
+
+            
 
             foreach (var _role in allRoles)
             {
-                if (role.Contains(_role.Name))
+                if (role.Contains(_role.Name) && !roles.Contains(_role.Name))
                 {
                     await _userManager.AddToRoleAsync(user, _role.Name);
                 }
-                else
+                else if(!role.Contains(_role.Name) && roles.Contains(_role.Name))
                 {
                     await _userManager.RemoveFromRoleAsync(user, _role.Name);
                 };

@@ -14,6 +14,7 @@ using Microsoft.Extensions.ML;
 using SearchFill.Data;
 using SearchFill.Models;
 using Microsoft.OpenApi.Models;
+using SearchFill.Hubs;
 
 namespace SearchFill
 {
@@ -31,6 +32,7 @@ namespace SearchFill
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddSignalR();
 
             //services.AddDbContext<SearchFillContext>(options =>
             //        options.UseSqlServer(Configuration.GetConnectionString("SearchFillContext")));
@@ -40,11 +42,11 @@ namespace SearchFill
 
             services.AddSwaggerGen();
 
-            services.AddAuthentication().AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            });
+            //services.AddAuthentication().AddFacebook(facebookOptions =>
+            //{
+            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //});
 
             //services.AddAuthentication().AddGoogle(options =>
             //{
@@ -55,11 +57,28 @@ namespace SearchFill
             //    options.ClientSecret = googleAuthNSection["ClientSecret"];
             //});
 
+            services.AddTransient<IOperationTransient, Operation>();
+            services.AddScoped<IOperationScoped, Operation>();
+            services.AddSingleton<IOperationSingleton, Operation>();
+            services.AddSingleton<IOperationSingletonInstance>(new Operation(Guid.Empty));
+            //services.AddTransient<OperationService, OperationService>();
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //app.UseSession();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -70,6 +89,7 @@ namespace SearchFill
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -80,9 +100,12 @@ namespace SearchFill
             });
 
             app.UseRouting();
+            
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
@@ -90,6 +113,7 @@ namespace SearchFill
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chathub");
             });
 
 

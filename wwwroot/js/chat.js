@@ -7,7 +7,7 @@ document.getElementById("sendButton").disabled = true;
 
 connection.on("ReceiveMessage", function (sender, user, message) {
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    var encodedMsg = sender + " says " + msg + " to " + user;
+    var encodedMsg = sender + " : " + msg;
     var li = document.createElement("li");
     li.textContent = encodedMsg;
     document.getElementById("messagesList").appendChild(li);

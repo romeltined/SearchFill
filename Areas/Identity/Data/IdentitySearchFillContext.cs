@@ -21,6 +21,10 @@ namespace SearchFill.Data
         public DbSet<SearchFill.Models.Person> Person { get; set; }
         public DbSet<SearchFill.Models.Item> Item { get; set; }
         public DbSet<SearchFill.Models.SportItems> SportItems { get; set; }
+
+        public DbSet<SearchFill.Models.UserR> UserRs { get; set; }
+        public DbSet<SearchFill.Models.Connection> Connections { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

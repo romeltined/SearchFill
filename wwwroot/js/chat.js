@@ -9,8 +9,10 @@ connection.on("ReceiveMessage", function (sender, user, message) {
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     var encodedMsg = sender + " : " + msg;
     var li = document.createElement("li");
+    var x = document.getElementById("myAudio");
     li.textContent = encodedMsg;
     document.getElementById("messagesList").appendChild(li);
+    x.play();
 });
 
 connection.start().then(function () {

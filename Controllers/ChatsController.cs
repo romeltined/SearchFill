@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,18 +20,44 @@ namespace SearchFill.Controllers
     {
 
         private readonly IHubContext<ChatHub> _hubContext;
+        private readonly IHubContext<LoginXHub> _loginxContext;
         private readonly SearchFillContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+ 
         public ChatsController(IHubContext<ChatHub> hubContext, 
                                 SearchFillContext context, 
                                 UserManager<IdentityUser> userManager,
-                                SignInManager<IdentityUser> signInManager)
+                                SignInManager<IdentityUser> signInManager,
+                                IHubContext<LoginXHub> loginxContext)
         {
+            _loginxContext = loginxContext;
             _context = context;   
             _hubContext = hubContext;
             _userManager = userManager;
             _signInManager = signInManager;
+          
+        }
+
+        public ActionResult Console()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Console([FromForm] string email, string connectionId)
+        {
+            try
+            {
+                {
+                   await _loginxContext.Clients.Client(connectionId).SendAsync("ReceiveCredential", email);
+                }
+                return RedirectToAction(nameof(Console));
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Console));
+            }
         }
 
         // GET: ChatsController
@@ -104,6 +133,27 @@ namespace SearchFill.Controllers
         public ActionResult Edit(int id)
         {
             return View();
+        }
+
+        public ActionResult LoginX()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> LoginX([FromForm] string email)
+        {
+            try
+            {
+                IdentityUser user = await _userManager.FindByEmailAsync(email);
+                await _signInManager.SignInAsync(user,true,null);
+
+                return RedirectToAction(nameof(LoginX));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // POST: ChatsController/Edit/5

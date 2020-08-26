@@ -79,6 +79,14 @@ namespace SearchFill.Controllers
             return Ok(imageDataURL);
         }
 
+        [HttpPost]
+        [Route("[action]")]
+        //api/qrcode/post
+        public async Task<IActionResult> Post([FromBody] string input)
+        {
+            return Ok(input);
+        }
+
         // PUT api/<QRCodeController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
@@ -90,6 +98,7 @@ namespace SearchFill.Controllers
         public void Delete(int id)
         {
         }
+
 
 
         private static Byte[] BitmapToBytes(Bitmap img)

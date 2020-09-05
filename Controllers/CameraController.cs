@@ -85,6 +85,7 @@ namespace SearchFill.Controllers
         /// <param name="fileName"></param>
         private void StoreInFolder(IFormFile file, string fileName)
         {
+            var x = "sample";
             using (FileStream fs = System.IO.File.Create(fileName))
             {
                 file.CopyTo(fs);

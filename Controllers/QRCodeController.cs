@@ -65,7 +65,7 @@ namespace SearchFill.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([Bind("email,connectionId")] QRCodeDTO qRCodeDTO)
         {
-            string domainName = "192.168.1.145";  
+            string domainName = "192.168.10.145";  
             string qrText = @"http://" + domainName + "/api/Qrcode/?email="+ qRCodeDTO.Email + "&connectionId=" + qRCodeDTO.ConnectionId;
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();

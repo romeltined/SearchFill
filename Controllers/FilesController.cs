@@ -32,7 +32,7 @@ namespace SearchFill.Controllers
         [HttpPost]
         public async Task<IActionResult> PostFiles(ICollection<IFormFile> files)
         {
-            var filePath = @"C:\Users\rstin\AppData\Local\Temp\"; // Path.GetTempFileName();
+            var filePath = @"C:\inetpub\wwwroot\SearchFill\fileuploads\"; // Path.GetTempFileName();
             var fileName = Path.GetTempFileName();
             var fileNameTrue="";
 
